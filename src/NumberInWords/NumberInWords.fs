@@ -12,8 +12,7 @@ module NumberInWords =
     [<Literal>]
     let private Empty = ""
 
-    let private defaultDimension =
-        {
+    let private defaultDimension = {
             nominative = Empty;
             genitiveSingular = Empty;
             genitivePlural = Empty;

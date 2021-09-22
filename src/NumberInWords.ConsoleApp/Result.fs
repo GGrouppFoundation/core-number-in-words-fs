@@ -8,6 +8,11 @@ type internal Result<'success, 'failure> =
     | Success of success: 'success
     | Failure of failure: 'failure
 
+let internal map mapSuccessFunc mapFailureFunc source =
+    match source with
+    | Success success -> mapSuccessFunc success |> Success
+    | Failure failure -> mapFailureFunc failure |> Failure
+
 let internal mapSuccess mapSuccessFunc source =
     match source with
     | Success success -> mapSuccessFunc success |> Success

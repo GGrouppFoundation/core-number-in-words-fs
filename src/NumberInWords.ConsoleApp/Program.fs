@@ -22,11 +22,11 @@ let private withCapitalLetter text =
     |> Seq.mapi toUpperOnlyFirst
     |> String.Concat
 
-let private printText text =
-    printfn "%O" text
+let private printText text = printfn "%O" text
 
-let private finish _ =
-    0
+let private toSuccessCode _ = 0
+
+let private toFailureCode _ = -1
 
 [<EntryPoint>]
 let main argv =
@@ -35,5 +35,5 @@ let main argv =
     |> forward parseOrFailure
     |> mapSuccess toWordsInRussian
     |> mapSuccess withCapitalLetter
-    |> fold printText printText
-    |> finish
+    |> map printText printText
+    |> fold toSuccessCode toFailureCode

@@ -16,12 +16,6 @@ module internal InternalNumberInWords =
 
     [<Literal>]
     let private ThousandUL = 1000UL
-
-    [<Literal>]
-    let private Empty = ""
-
-    [<Literal>]
-    let private WhiteSpace = " "
     
     let private getDimensionRussianWord position defaultDimension =
         match position with
@@ -92,24 +86,22 @@ module internal InternalNumberInWords =
         elif lessThenTwenty >= 2 && lessThenTwenty <= 4 then dimension.genitiveSingular
         else dimension.genitivePlural
 
-    let private twoDigitsGroupToWordsInRussian twoDigitsGroup dimension =
-        if twoDigitsGroup >= 20 then (twoDigitsGroup / Ten, twoDigitsGroup % Ten)
-        else (Zero, twoDigitsGroup)
+    let private twoDigitGroupToWordsInRussian twoDigitGroup dimension =
+        if twoDigitGroup >= 20 then (twoDigitGroup / Ten, twoDigitGroup % Ten)
+        else (Zero, twoDigitGroup)
         |> fun (ten, lessThenTwenty) -> seq {
             yield! getTenNameInRussian ten
             yield! lessThenTwentyToWordsInRussian lessThenTwenty dimension.gender
-
-            let dimensionWord = getDimensionWord lessThenTwenty dimension
-            if dimensionWord <> Empty then dimensionWord
+            getDimensionWord lessThenTwenty dimension
         }
 
-    let private threeDigitsGroupToWordsInRussian (threeDigitsGroup, dimension) =
+    let private threeDigitGroupToWordsInRussian (threeDigitGroup, dimension) =
         seq {
-            yield! getHundredNameInRussian (threeDigitsGroup / Hundred)
-            yield! twoDigitsGroupToWordsInRussian (threeDigitsGroup % Hundred) dimension
+            yield! getHundredNameInRussian (threeDigitGroup / Hundred)
+            yield! twoDigitGroupToWordsInRussian (threeDigitGroup % Hundred) dimension
         }
 
-    let private splitIntoThreeDigitsGroups (source, defaultDimension) =
+    let private splitIntoThreeDigitGroups (source, defaultDimension) =
         seq {
             let mutable position = 0
             let mutable value = source
@@ -123,21 +115,25 @@ module internal InternalNumberInWords =
                 position <- position + 1
         }
 
-    let private getNonZeroRussianWords value =
-        value
-        |> splitIntoThreeDigitsGroups
-        |> Seq.rev
-        |> Seq.map threeDigitsGroupToWordsInRussian
-        |> Seq.concat
+    [<Literal>]
+    let private Empty = ""
 
-    let private getZeroRussianWords dimension =
-        seq {
-            "ноль"
-            let dimensionWord = getDimensionWord Zero dimension
-            if dimensionWord <> Empty then dimensionWord
-        }
+    [<Literal>]
+    let private WhiteSpace = " "
+
+    let private isNotEmpty text = text <> Empty
 
     let internal internalToWordsInRussian (value, dimension) =
-        if value = ZeroUL then getZeroRussianWords dimension
-        else getNonZeroRussianWords (value, dimension)
+        if value = ZeroUL then
+            seq {
+                "ноль"
+                getDimensionWord Zero dimension
+            }
+        else
+            (value, dimension)
+            |> splitIntoThreeDigitGroups
+            |> Seq.rev
+            |> Seq.map threeDigitGroupToWordsInRussian
+            |> Seq.concat
+        |> Seq.filter isNotEmpty
         |> String.concat WhiteSpace
