@@ -25,8 +25,11 @@ let private withCapitalLetter text =
 let private printText text =
     printfn "%O" text
 
-let private finish _ =
+let private finishSuccess _ =
     0
+
+let private finishFailure _ =
+    -1
 
 [<EntryPoint>]
 let main argv =
@@ -35,5 +38,5 @@ let main argv =
     |> forward parseOrFailure
     |> mapSuccess toWordsInRussian
     |> mapSuccess withCapitalLetter
-    |> fold printText printText
-    |> finish
+    |> map printText printText
+    |> fold finishSuccess finishFailure
