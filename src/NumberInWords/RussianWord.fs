@@ -8,4 +8,4 @@ type RussianWord = {
         GenitiveSingular: string
         GenitivePlural: string
         Gender: RussianWordGender
-    }
+}
