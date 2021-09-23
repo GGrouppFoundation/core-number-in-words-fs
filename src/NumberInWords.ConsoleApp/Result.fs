@@ -5,8 +5,8 @@ open System.Runtime.CompilerServices
 
 [<IsReadOnly; Struct>]
 type internal Result<'success, 'failure> =
-    | Success of success: 'success
-    | Failure of failure: 'failure
+    | Success of Success: 'success
+    | Failure of Failure: 'failure
 
 let internal map mapSuccessFunc mapFailureFunc source =
     match source with

@@ -13,10 +13,10 @@ module NumberInWords =
     let private Empty = ""
 
     let private defaultDimension = {
-            nominative = Empty;
-            genitiveSingular = Empty;
-            genitivePlural = Empty;
-            gender = Masculine
+            Nominative = Empty;
+            GenitiveSingular = Empty;
+            GenitivePlural = Empty;
+            Gender = Masculine
         }
 
     let private writeMinus source = "минус " + source
@@ -24,10 +24,10 @@ module NumberInWords =
     let toWordsInRussianWithDimension value dimension =
         if value >= Zero then
             (value |> uint64, dimension)
-            |> internalToWordsInRussian
+            |> internalGetRussianWords
         else
             (value * MinusOne |> uint64, dimension)
-            |> internalToWordsInRussian
+            |> internalGetRussianWords
             |> writeMinus
 
     let toWordsInRussian value =

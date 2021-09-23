@@ -179,10 +179,10 @@ let ``The result of toWordsInRussianWithDimension should be expected`` value nom
         | _ -> Masculine
 
     let dimension = {
-        nominative = nominative;
-        genitiveSingular = genitiveSingular;
-        genitivePlural = genitivePlural;
-        gender = russianWordGender
+        Nominative = nominative;
+        GenitiveSingular = genitiveSingular;
+        GenitivePlural = genitivePlural;
+        Gender = russianWordGender
     }
 
     let actual = toWordsInRussianWithDimension value dimension
