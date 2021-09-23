@@ -2,6 +2,7 @@
 
 
 module internal InternalNumberInWords =
+
     [<Literal>]
     let private ZeroUL = 0UL
 
@@ -16,9 +17,66 @@ module internal InternalNumberInWords =
 
     [<Literal>]
     let private ThousandUL = 1000UL
-    
-    let private getDimensionRussianWord position defaultDimension =
-        match position with
+
+    [<Literal>]
+    let private Empty = ""
+
+    [<Literal>]
+    let private WhiteSpace = " "
+
+    let private getHundredWord hundred =
+        match hundred with
+        | 1 -> "сто"
+        | 2 -> "двести"
+        | 3 -> "триста"
+        | 4 -> "четыреста"
+        | 5 -> "пятьсот"
+        | 6 -> "шестьсот"
+        | 7 -> "семьсот"
+        | 8 -> "восемьсот"
+        | 9 -> "девятьсот"
+        | _ -> Empty
+
+    let private getTenWord ten =
+        match ten with
+        | 2 -> "двадцать"
+        | 3 -> "тридцать"
+        | 4 -> "сорок"
+        | 5 -> "пятьдесят"
+        | 6 -> "шестьдесят"
+        | 7 -> "семьдесят"
+        | 8 -> "восемьдесят"
+        | 9 -> "девяносто"
+        | _ -> Empty
+
+    let private getLessThenTwentyWord lessThenTwenty dimensionGender =
+        match (lessThenTwenty, dimensionGender) with
+        | (1, Feminine) -> "одна"
+        | (1, Neuter) -> "одно"
+        | (1, _) -> "один"
+        | (2, Feminine) -> "две"
+        | (2, _) -> "два"
+        | (3, _) -> "три"
+        | (4, _) -> "четыре"
+        | (5, _) -> "пять"
+        | (6, _) -> "шесть"
+        | (7, _) -> "семь"
+        | (8, _) -> "восемь"
+        | (9, _) -> "девять"
+        | (10, _) -> "десять"
+        | (11, _) -> "одиннадцать"
+        | (12, _) -> "двенадцать"
+        | (13, _) -> "тринадцать"
+        | (14, _) -> "четырнадцать"
+        | (15, _) -> "пятнадцать"
+        | (16, _) -> "шестнадцать"
+        | (17, _) -> "семнадцать"
+        | (18, _) -> "восемнадцать"
+        | (19, _) -> "девятнадцать"
+        | _ -> Empty
+
+    let private getNumberRankDimension numberRank zeroRankDimension =
+        match numberRank with
         | 1 -> { nominative = "тысяча"; genitiveSingular = "тысячи"; genitivePlural = "тысяч"; gender = Feminine }
         | 2 -> { nominative = "миллион"; genitiveSingular = "миллиона"; genitivePlural = "миллионов"; gender = Masculine }
         | 3 -> { nominative = "миллиард"; genitiveSingular = "миллиарда"; genitivePlural = "миллиардов"; gender = Masculine }
@@ -28,102 +86,48 @@ module internal InternalNumberInWords =
         | 7 -> { nominative = "секстиллион"; genitiveSingular = "секстиллиона"; genitivePlural = "секстиллионов"; gender = Masculine }
         | 8 -> { nominative = "септиллион"; genitiveSingular = "септиллиона"; genitivePlural = "септиллионов"; gender = Masculine }
         | 9 -> { nominative = "октиллион"; genitiveSingular = "октиллиона"; genitivePlural = "октиллионов"; gender = Masculine }
-        | _ -> defaultDimension
-
-    let private getHundredNameInRussian hundred =
-        match hundred with
-        | 1 -> seq { "сто" }
-        | 2 -> seq { "двести" }
-        | 3 -> seq { "триста" }
-        | 4 -> seq { "четыреста" }
-        | 5 -> seq { "пятьсот" }
-        | 6 -> seq { "шестьсот" }
-        | 7 -> seq { "семьсот" }
-        | 8 -> seq { "восемьсот" }
-        | 9 -> seq { "девятьсот" }
-        | _ -> Seq.empty
-
-    let private getTenNameInRussian ten =
-        match ten with
-        | 2 -> seq { "двадцать" }
-        | 3 -> seq { "тридцать" }
-        | 4 -> seq { "сорок" }
-        | 5 -> seq { "пятьдесят" }
-        | 6 -> seq { "шестьдесят" }
-        | 7 -> seq { "семьдесят" }
-        | 8 -> seq { "восемьдесят" }
-        | 9 -> seq { "девяносто" }
-        | _ -> Seq.empty
-
-    let private lessThenTwentyToWordsInRussian lessThenTwenty dimensionGender =
-        match (lessThenTwenty, dimensionGender) with
-        | (1, Feminine) -> seq { "одна" }
-        | (1, Neuter) -> seq { "одно" }
-        | (1, _) -> seq { "один" }
-        | (2, Feminine) -> seq { "две" }
-        | (2, _) -> seq { "два" }
-        | (3, _) -> seq { "три" }
-        | (4, _) -> seq { "четыре" }
-        | (5, _) -> seq { "пять" }
-        | (6, _) -> seq { "шесть" }
-        | (7, _) -> seq { "семь" }
-        | (8, _) -> seq { "восемь" }
-        | (9, _) -> seq { "девять" }
-        | (10, _) -> seq { "десять" }
-        | (11, _) -> seq { "одиннадцать" }
-        | (12, _) -> seq { "двенадцать" }
-        | (13, _) -> seq { "тринадцать" }
-        | (14, _) -> seq { "четырнадцать" }
-        | (15, _) -> seq { "пятнадцать" }
-        | (16, _) -> seq { "шестнадцать" }
-        | (17, _) -> seq { "семнадцать" }
-        | (18, _) -> seq { "восемнадцать" }
-        | (19, _) -> seq { "девятнадцать" }
-        | _ -> Seq.empty
+        | _ -> zeroRankDimension
 
     let private getDimensionWord lessThenTwenty dimension =
-        if lessThenTwenty = 1 then dimension.nominative
-        elif lessThenTwenty >= 2 && lessThenTwenty <= 4 then dimension.genitiveSingular
-        else dimension.genitivePlural
+        match lessThenTwenty with
+        | 1 -> dimension.nominative
+        | 2 | 3 | 4 -> dimension.genitiveSingular
+        | _ -> dimension.genitivePlural
 
     let private twoDigitGroupToWordsInRussian twoDigitGroup dimension =
-        if twoDigitGroup >= 20 then (twoDigitGroup / Ten, twoDigitGroup % Ten)
-        else (Zero, twoDigitGroup)
+        if twoDigitGroup >= 20 then
+            (twoDigitGroup / Ten, twoDigitGroup % Ten)
+        else
+            (Zero, twoDigitGroup)
         |> fun (ten, lessThenTwenty) -> seq {
-            yield! getTenNameInRussian ten
-            yield! lessThenTwentyToWordsInRussian lessThenTwenty dimension.gender
+            getTenWord ten
+            getLessThenTwentyWord lessThenTwenty dimension.gender
             getDimensionWord lessThenTwenty dimension
         }
 
-    let private threeDigitGroupToWordsInRussian (threeDigitGroup, dimension) =
+    let private getThreeDigitGroupWords (threeDigitGroup, dimension) =
         seq {
-            yield! getHundredNameInRussian (threeDigitGroup / Hundred)
+            getHundredWord (threeDigitGroup / Hundred)
             yield! twoDigitGroupToWordsInRussian (threeDigitGroup % Hundred) dimension
         }
 
-    let private splitIntoThreeDigitGroups (source, defaultDimension) =
+    let private splitIntoThreeDigitGroups (source, zeroRankDimension) =
         seq {
-            let mutable position = 0
+            let mutable rank = 0
             let mutable value = source
             while value > ZeroUL do
                 let group = value % ThousandUL |> int32
-                if position = 0 || group <> Zero then
-                    let dimension = getDimensionRussianWord position defaultDimension
+                if rank = 0 || group <> Zero then
+                    let dimension = getNumberRankDimension rank zeroRankDimension
                     (group, dimension)
 
                 value <- value / ThousandUL
-                position <- position + 1
+                rank <- rank + 1
         }
-
-    [<Literal>]
-    let private Empty = ""
-
-    [<Literal>]
-    let private WhiteSpace = " "
 
     let private isNotEmpty text = text <> Empty
 
-    let internal internalToWordsInRussian (value, dimension) =
+    let internal internalGetRussianWords (value, dimension) =
         if value = ZeroUL then
             seq {
                 "ноль"
@@ -133,7 +137,7 @@ module internal InternalNumberInWords =
             (value, dimension)
             |> splitIntoThreeDigitGroups
             |> Seq.rev
-            |> Seq.map threeDigitGroupToWordsInRussian
+            |> Seq.map getThreeDigitGroupWords
             |> Seq.concat
         |> Seq.filter isNotEmpty
         |> String.concat WhiteSpace

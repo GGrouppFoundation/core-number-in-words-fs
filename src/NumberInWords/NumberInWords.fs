@@ -24,10 +24,10 @@ module NumberInWords =
     let toWordsInRussianWithDimension value dimension =
         if value >= Zero then
             (value |> uint64, dimension)
-            |> internalToWordsInRussian
+            |> internalGetRussianWords
         else
             (value * MinusOne |> uint64, dimension)
-            |> internalToWordsInRussian
+            |> internalGetRussianWords
             |> writeMinus
 
     let toWordsInRussian value =
