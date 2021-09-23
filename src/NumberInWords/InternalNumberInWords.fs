@@ -77,22 +77,22 @@ module internal InternalNumberInWords =
 
     let private getNumberRankDimension numberRank zeroRankDimension =
         match numberRank with
-        | 1 -> { nominative = "тысяча"; genitiveSingular = "тысячи"; genitivePlural = "тысяч"; gender = Feminine }
-        | 2 -> { nominative = "миллион"; genitiveSingular = "миллиона"; genitivePlural = "миллионов"; gender = Masculine }
-        | 3 -> { nominative = "миллиард"; genitiveSingular = "миллиарда"; genitivePlural = "миллиардов"; gender = Masculine }
-        | 4 -> { nominative = "триллион"; genitiveSingular = "триллиона"; genitivePlural = "триллионов"; gender = Masculine }
-        | 5 -> { nominative = "квадриллион"; genitiveSingular = "квадриллиона"; genitivePlural = "квадриллионов"; gender = Masculine }
-        | 6 -> { nominative = "квинтиллион"; genitiveSingular = "квинтиллиона"; genitivePlural = "квинтиллионов"; gender = Masculine }
-        | 7 -> { nominative = "секстиллион"; genitiveSingular = "секстиллиона"; genitivePlural = "секстиллионов"; gender = Masculine }
-        | 8 -> { nominative = "септиллион"; genitiveSingular = "септиллиона"; genitivePlural = "септиллионов"; gender = Masculine }
-        | 9 -> { nominative = "октиллион"; genitiveSingular = "октиллиона"; genitivePlural = "октиллионов"; gender = Masculine }
+        | 1 -> { Nominative = "тысяча"; GenitiveSingular = "тысячи"; GenitivePlural = "тысяч"; Gender = Feminine }
+        | 2 -> { Nominative = "миллион"; GenitiveSingular = "миллиона"; GenitivePlural = "миллионов"; Gender = Masculine }
+        | 3 -> { Nominative = "миллиард"; GenitiveSingular = "миллиарда"; GenitivePlural = "миллиардов"; Gender = Masculine }
+        | 4 -> { Nominative = "триллион"; GenitiveSingular = "триллиона"; GenitivePlural = "триллионов"; Gender = Masculine }
+        | 5 -> { Nominative = "квадриллион"; GenitiveSingular = "квадриллиона"; GenitivePlural = "квадриллионов"; Gender = Masculine }
+        | 6 -> { Nominative = "квинтиллион"; GenitiveSingular = "квинтиллиона"; GenitivePlural = "квинтиллионов"; Gender = Masculine }
+        | 7 -> { Nominative = "секстиллион"; GenitiveSingular = "секстиллиона"; GenitivePlural = "секстиллионов"; Gender = Masculine }
+        | 8 -> { Nominative = "септиллион"; GenitiveSingular = "септиллиона"; GenitivePlural = "септиллионов"; Gender = Masculine }
+        | 9 -> { Nominative = "октиллион"; GenitiveSingular = "октиллиона"; GenitivePlural = "октиллионов"; Gender = Masculine }
         | _ -> zeroRankDimension
 
     let private getDimensionWord lessThenTwenty dimension =
         match lessThenTwenty with
-        | 1 -> dimension.nominative
-        | 2 | 3 | 4 -> dimension.genitiveSingular
-        | _ -> dimension.genitivePlural
+        | 1 -> dimension.Nominative
+        | 2 | 3 | 4 -> dimension.GenitiveSingular
+        | _ -> dimension.GenitivePlural
 
     let private twoDigitGroupToWordsInRussian twoDigitGroup dimension =
         if twoDigitGroup >= 20 then
@@ -101,7 +101,7 @@ module internal InternalNumberInWords =
             (Zero, twoDigitGroup)
         |> fun (ten, lessThenTwenty) -> seq {
             getTenWord ten
-            getLessThenTwentyWord lessThenTwenty dimension.gender
+            getLessThenTwentyWord lessThenTwenty dimension.Gender
             getDimensionWord lessThenTwenty dimension
         }
 
