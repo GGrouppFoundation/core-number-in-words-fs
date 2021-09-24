@@ -1,6 +1,5 @@
 ﻿namespace GGroupp
 
-
 module internal InternalNumberInWords =
 
     [<Literal>]
