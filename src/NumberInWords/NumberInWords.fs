@@ -3,6 +3,7 @@
 open InternalNumberInWords
 
 module NumberInWords =
+
     [<Literal>]
     let private Zero = 0L
 
