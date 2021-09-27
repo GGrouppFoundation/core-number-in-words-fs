@@ -2,9 +2,8 @@
 open Result
 open GGroupp.NumberInWords
 
-
-let private firstOrFailure collection =
-    if Seq.length collection > 0 then Seq.item 0 collection |> Success
+let private firstArgumentOrFailure argv =
+    if Seq.length argv > 0 then Seq.item 0 argv |> Success
     else Failure "Аргументы командной строки отсутствуют"
 
 let private parseOrFailure (text: string) =
@@ -31,7 +30,7 @@ let private toFailureCode _ = -1
 [<EntryPoint>]
 let main argv =
     argv
-    |> firstOrFailure
+    |> firstArgumentOrFailure
     |> forward parseOrFailure
     |> mapSuccess toWordsInRussian
     |> mapSuccess withCapitalLetter

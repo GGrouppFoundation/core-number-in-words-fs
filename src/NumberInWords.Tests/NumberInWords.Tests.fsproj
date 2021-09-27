@@ -42,4 +42,5 @@
       <GeneratePathProperty></GeneratePathProperty>
     </PackageReference>
   </ItemGroup>
+
 </Project>

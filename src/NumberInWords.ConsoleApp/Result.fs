@@ -2,7 +2,6 @@
 
 open System.Runtime.CompilerServices
 
-
 [<IsReadOnly; Struct>]
 type internal Result<'success, 'failure> =
     | Success of Success: 'success
