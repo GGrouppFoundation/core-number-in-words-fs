@@ -12,9 +12,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RussianWordGender.fs" />
-    <Compile Include="RussianWord.fs" />
-    <Compile Include="InternalNumberInWords.fs" />
+    <Folder Include="RussianWord\" />
+    <Folder Include="Internal\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="RussianWord\RussianWordGender.fs" />
+    <Compile Include="RussianWord\RussianWord.fs" />
+    <Compile Include="Internal\InternalNumberInWords.fs" />
     <Compile Include="NumberInWords.fs" />
   </ItemGroup>
 

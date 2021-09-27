@@ -93,7 +93,7 @@ module internal InternalNumberInWords =
         | 2 | 3 | 4 -> dimension.GenitiveSingular
         | _ -> dimension.GenitivePlural
 
-    let private twoDigitGroupToWordsInRussian twoDigitGroup dimension =
+    let private twoDigitGroupToWordsInRussian (twoDigitGroup, dimension) =
         if twoDigitGroup >= 20 then
             (twoDigitGroup / Ten, twoDigitGroup % Ten)
         else
@@ -106,8 +106,8 @@ module internal InternalNumberInWords =
 
     let private getThreeDigitGroupWords (threeDigitGroup, dimension) =
         seq {
-            getHundredWord (threeDigitGroup / Hundred)
-            yield! twoDigitGroupToWordsInRussian (threeDigitGroup % Hundred) dimension
+            threeDigitGroup / Hundred |> getHundredWord
+            yield! (threeDigitGroup % Hundred, dimension) |> twoDigitGroupToWordsInRussian
         }
 
     let private splitIntoThreeDigitGroups (source, zeroRankDimension) =
