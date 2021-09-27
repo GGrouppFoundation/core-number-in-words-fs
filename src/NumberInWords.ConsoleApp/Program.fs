@@ -2,7 +2,6 @@
 open Result
 open GGroupp.NumberInWords
 
-
 let private firstOrFailure collection =
     if Seq.length collection > 0 then Seq.item 0 collection |> Success
     else Failure "Аргументы командной строки отсутствуют"
