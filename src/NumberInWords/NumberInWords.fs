@@ -14,11 +14,11 @@ module NumberInWords =
     let private Empty = ""
 
     let private defaultDimension = {
-            Nominative = Empty;
-            GenitiveSingular = Empty;
-            GenitivePlural = Empty;
-            Gender = Masculine
-        }
+        Nominative = Empty;
+        GenitiveSingular = Empty;
+        GenitivePlural = Empty;
+        Gender = Masculine
+    }
 
     let private writeMinus source = "минус " + source
 
