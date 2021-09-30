@@ -43,3 +43,9 @@ jobs:
 
     - name: Test NumberInWords.Tests.fsproj
       run: dotnet test ./src/*/NumberInWords.Tests.fsproj --no-restore  -c Release
+      
+    # Push
+      
+    - name: Push Packages
+      if: ${{ github.ref == 'refs/heads/main' }}
+      run: dotnet nuget push "../../../nuget/*.nupkg" -s ${{ secrets.GGROUPP_NUGET_SOURCE_URL }} -k ${{ secrets.GGROUPP_NUGET_SOURCE_USER_PASSWORD }} --skip-duplicate
