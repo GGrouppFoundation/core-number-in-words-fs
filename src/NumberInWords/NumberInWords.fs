@@ -13,6 +13,11 @@ module NumberInWords =
     [<Literal>]
     let private Empty = ""
 
+    [<Literal>]
+    let private WhiteSpace = " "
+
+    let private Minus = "минус"
+
     let private defaultDimension = {
         Nominative = Empty;
         GenitiveSingular = Empty;
@@ -20,7 +25,11 @@ module NumberInWords =
         Gender = Masculine
     }
 
-    let private writeMinus source = "минус " + source
+    let private join first next =
+        seq {
+            yield first
+            yield! next
+        }
 
     let toWordsInRussianWithDimension value dimension =
         if value >= Zero then
@@ -29,7 +38,8 @@ module NumberInWords =
         else
             (value * MinusOne |> uint64, dimension)
             |> internalGetRussianWords
-            |> writeMinus
+            |> join Minus
+        |> String.concat WhiteSpace
 
     let toWordsInRussian value =
         toWordsInRussianWithDimension value defaultDimension

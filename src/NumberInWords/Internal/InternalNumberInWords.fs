@@ -20,11 +20,8 @@ module internal InternalNumberInWords =
     [<Literal>]
     let private Empty = ""
 
-    [<Literal>]
-    let private WhiteSpace = " "
-
-    let private getHundredWord hundred =
-        match hundred with
+    let private getHundredsName hundreds =
+        match hundreds with
         | 1 -> "сто"
         | 2 -> "двести"
         | 3 -> "триста"
@@ -36,8 +33,8 @@ module internal InternalNumberInWords =
         | 9 -> "девятьсот"
         | _ -> Empty
 
-    let private getTenWord ten =
-        match ten with
+    let private getTensName tens =
+        match tens with
         | 2 -> "двадцать"
         | 3 -> "тридцать"
         | 4 -> "сорок"
@@ -48,7 +45,7 @@ module internal InternalNumberInWords =
         | 9 -> "девяносто"
         | _ -> Empty
 
-    let private getLessThenTwentyWord lessThenTwenty dimensionGender =
+    let private getLessThenTwentyName lessThenTwenty dimensionGender =
         match (lessThenTwenty, dimensionGender) with
         | (1, Feminine) -> "одна"
         | (1, Neuter) -> "одно"
@@ -87,7 +84,7 @@ module internal InternalNumberInWords =
         | 9 -> { Nominative = "октиллион"; GenitiveSingular = "октиллиона"; GenitivePlural = "октиллионов"; Gender = Masculine }
         | _ -> zeroRankDimension
 
-    let private getDimensionWord lessThenTwenty dimension =
+    let private getDimensionDeclension lessThenTwenty dimension =
         match lessThenTwenty with
         | 1 -> dimension.Nominative
         | 2 | 3 | 4 -> dimension.GenitiveSingular
@@ -98,15 +95,15 @@ module internal InternalNumberInWords =
             (twoDigitGroup / Ten, twoDigitGroup % Ten)
         else
             (Zero, twoDigitGroup)
-        |> fun (ten, lessThenTwenty) -> seq {
-            getTenWord ten
-            getLessThenTwentyWord lessThenTwenty dimension.Gender
-            getDimensionWord lessThenTwenty dimension
+        |> fun (tens, lessThenTwenty) -> seq {
+            getTensName tens
+            getLessThenTwentyName lessThenTwenty dimension.Gender
+            getDimensionDeclension lessThenTwenty dimension
         }
 
     let private getThreeDigitGroupWords (threeDigitGroup, dimension) =
         seq {
-            threeDigitGroup / Hundred |> getHundredWord
+            threeDigitGroup / Hundred |> getHundredsName
             yield! (threeDigitGroup % Hundred, dimension) |> twoDigitGroupToWordsInRussian
         }
 
@@ -130,7 +127,7 @@ module internal InternalNumberInWords =
         if value = ZeroUL then
             seq {
                 "ноль"
-                getDimensionWord Zero dimension
+                getDimensionDeclension Zero dimension
             }
         else
             (value, dimension)
@@ -139,4 +136,3 @@ module internal InternalNumberInWords =
             |> Seq.map getThreeDigitGroupWords
             |> Seq.concat
         |> Seq.filter isNotEmpty
-        |> String.concat WhiteSpace
